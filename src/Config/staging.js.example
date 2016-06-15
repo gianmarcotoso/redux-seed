@@ -1,0 +1,11 @@
+module.exports = {
+    name: 'awesome',
+    title: 'My Awesome App',
+
+    server: 'https://staging.my-awesome-app.com',
+    is_production: false,
+
+    dom: {
+        root: '#main'
+    }
+}
