@@ -5,10 +5,8 @@ export default async function(app, done, error) {
 
 	app.register(Home)
 
-	app.onBeforeStart(next => {
-		console.log('Preparing to render, waiting a bit...')
+	app.on('applicationDidStart', async function(app) {
 
-		setTimeout(next, 5000)
 	})
 
 	done()

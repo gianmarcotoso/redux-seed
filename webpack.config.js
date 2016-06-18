@@ -1,5 +1,7 @@
 var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+var precss       = require('precss')
+var autoprefixer = require('autoprefixer')
 
 var config = require(__dirname + '/src/Config/' + process.env.NODE_ENV)
 
@@ -11,7 +13,7 @@ module.exports = {
 	},
 	module: {
 		loaders: [
-			{ test: /\.css$/, loader: 'style-loader!css-loader!autoprefixer-loader' },
+			{ test: /\.css$/, loader: 'style-loader!css-loader!postcss-loader' },
 			{ test: /\.woff2?(\?v=\d+\.\d+\.\d+)?$/,   loader: 'url?limit=10000&mimetype=application/font-woff' },
 			{ test: /\.ttf(\?v=\d+\.\d+\.\d+)?$/,    loader: 'url?limit=10000&mimetype=application/octet-stream' },
 			{ test: /\.eot(\?v=\d+\.\d+\.\d+)?$/,    loader: 'file' },
@@ -22,6 +24,9 @@ module.exports = {
 			{ test: /\.json$/, loaders: ['json-loader'] },
 			{ test: /\.hbs$/, loader: 'handlebars-loader' }
 		]
+	},
+	postcss: function()  {
+		return [precss, autoprefixer]
 	},
 	resolve: {
 		extensions: ['', '.js', '.jsx', '.json'],

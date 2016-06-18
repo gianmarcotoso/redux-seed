@@ -3,14 +3,19 @@ import ReactDOM from 'react-dom'
 
 import { combineReducers } from 'redux'
 import { Provider } from 'react-redux'
-import { Router, Route, IndexRedirect, browserHistory } from 'react-router'
-import { syncHistoryWithStore } from 'react-router-redux'
+import { Router } from 'react-router'
+
 import { routerReducer } from 'react-router-redux'
 
-import createStore from './CreateStore'
+import EventEmitter from 'events'
 
-class Application {
+import createStore from './CreateStore'
+import syncStore from './SyncStore'
+
+class Application extends EventEmitter {
 	constructor(name) {
+		super()
+
 		const _name = name
 		Object.defineProperty(this, 'name', {
 			enumerable: true,
@@ -33,8 +38,6 @@ class Application {
 	}
 
 	register(module) {
-		console.log(`Registering module ${module.name}...`)
-
 		if (module.routes) {
 			this.routes.push(module.routes)
 		}
@@ -42,12 +45,8 @@ class Application {
 		if (module.reducer) {
 			this.reducers[module.name] = module.reducer
 		}
-	}
 
-	onBeforeStart(callback) {
-		this._beforeStart = new Promise(resolve => {
-			callback(resolve)
-		})
+		this.emit('moduleDidRegister', this, module)
 	}
 
 	init(callback) {
@@ -57,41 +56,37 @@ class Application {
 	}
 
 	async start(id) {
-		const node = document.getElementById(id)
-		if (!node) {
+		const root = document.getElementById(id)
+		if (!root) {
 			throw new Error(`Node #${id} does not exist!`)
 		}
 
-        // Create the store
+        // Create the store, see Core/CreateStore.js
 		const _store = createStore(combineReducers(this.reducers))
 		Object.defineProperty(this, 'store', {
 			enumerable: true,
 			get: () => _store
 		})
 
-		// Sync history
-		const _history = syncHistoryWithStore(browserHistory, _store)
+		// Sync history with store, see Core/SyncStore.js
+		const _history = await syncStore(_store)
 		Object.defineProperty(this, 'history', {
 			enumerable: false,
 			get: () => _history
 		})
 
-		if (this._beforeStart) {
-			try {
-				await this._beforeStart
-			} catch (error) {
-				throw new Error(error)
-			}
-		}
-
 		ReactDOM.render(
 			<Provider store={this.store}>
 				<Router history={this.history}>
-					{this.routes.map(r => r(this.store))}
+					{this.routes.map((r,i) =>
+						React.cloneElement(r(this.store), {key: i})
+					)}
 				</Router>
 			</Provider>,
-			node
+			root
 		)
+
+		this.emit('applicationDidStart', this)
 	}
 }
 
