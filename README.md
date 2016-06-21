@@ -154,3 +154,4 @@ Not much should be required, just do an `npm install` and then `npm start` to ru
 - Tests: is there a better way to organize tests? Should they all be in one place? Each module should probably have its own `tests` directory to test the reducer;
 - Is a `Module` class really required? A plain object is probably more than enough... unless it should have more functionality?
 - Support `async/await` in tests (I should change the way `tape` is called)
+- What about chunking?
