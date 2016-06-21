@@ -6,6 +6,6 @@ module.exports = {
     is_production: false,
 
     dom: {
-        root: '#main'
+        root: 'main'
     }
 }

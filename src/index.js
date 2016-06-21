@@ -1,5 +1,5 @@
-import Application from 'Core/Application'
-import startup from 'Core/Startup'
+import Application from 'core/Application'
+import startup from 'bootstrap/startup'
 
 const app = new Application(config.name)
 const root = config.dom.root

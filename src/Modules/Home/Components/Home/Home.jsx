@@ -3,9 +3,11 @@ import { Component } from 'react'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
-import * as HomeActions from 'Modules/Home/Actions'
+import * as HomeActions from '../../Actions'
 
-let css = require('bootstrap/dist/css/bootstrap.css')
+import Hello from 'components/Hello'
+
+import 'bootstrap/dist/css/bootstrap.css'
 
 class Home extends Component {
 	constructor(props) {
@@ -43,7 +45,8 @@ class Home extends Component {
 	render() {
 		return (
             <div>
-                <h1>Hello! I am your homepage!</h1>
+                <h1>I am your homepage!</h1>
+				<Hello name="Someone" />
                 <p>Counting... {this.props.count}</p>
 
 				<div className="btn-group">
@@ -51,6 +54,8 @@ class Home extends Component {
 					<button className="btn btn-danger" onClick={this.stopCounting}>Stop</button>
 					<button className="btn btn-success" onClick={this.startCounting}>Start</button>
 				</div>
+
+				{this.props.children}
             </div>
         )
 	}

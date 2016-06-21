@@ -9,8 +9,8 @@ import { routerReducer } from 'react-router-redux'
 
 import EventEmitter from 'events'
 
-import createStore from './CreateStore'
-import syncStore from './SyncStore'
+import createStore from 'bootstrap/createStore'
+import syncStore from 'bootstrap/syncStore'
 
 class Application extends EventEmitter {
 	constructor(name) {
@@ -22,12 +22,6 @@ class Application extends EventEmitter {
 			get: () => _name
 		})
 
-		const _routes = []
-		Object.defineProperty(this, 'routes', {
-			enumerable: false,
-			get: () => _routes
-		})
-
 		const _reducers = {
 			routing: routerReducer
 		}
@@ -35,18 +29,46 @@ class Application extends EventEmitter {
 			enumerable: false,
 			get: () => _reducers
 		})
+
+		const _modules = []
+		Object.defineProperty(this, 'modules', {
+			enumerable: true,
+			get: () => _modules
+		})
 	}
 
 	register(module) {
-		if (module.routes) {
-			this.routes.push(module.routes)
+		if (module.reducer) {
+			this.registerReducer(module.name, module.reducer)
 		}
 
-		if (module.reducer) {
-			this.reducers[module.name] = module.reducer
-		}
+		this.modules.push(module)
 
 		this.emit('moduleDidRegister', this, module)
+	}
+
+	registerReducer(name, reducer) {
+		this.reducers[name] = reducer
+	}
+
+	resolveRoutes() {
+		let routes = this.modules.filter(m => !m.parent).map(m => {
+			return this.resolveRoutesForModule(m)
+		})
+
+		return routes
+	}
+
+	resolveRoutesForModule(m) {
+		let children = this
+			.getSubmodulesOf(m)
+			.map((c, i) => this.resolveRoutesForModule(c))
+
+		return React.cloneElement(m.routes(this.store, children), {key: m.name})
+	}
+
+	getSubmodulesOf(module) {
+		return this.modules.filter(m => m.parent === module.name)
 	}
 
 	init(callback) {
@@ -61,14 +83,14 @@ class Application extends EventEmitter {
 			throw new Error(`Node #${id} does not exist!`)
 		}
 
-        // Create the store, see Core/CreateStore.js
+        // Create the store, see bootstrap/createStore.js
 		const _store = createStore(combineReducers(this.reducers))
 		Object.defineProperty(this, 'store', {
 			enumerable: true,
 			get: () => _store
 		})
 
-		// Sync history with store, see Core/SyncStore.js
+		// Sync history with store, see bootstrap/syncStore.js
 		const _history = await syncStore(_store)
 		Object.defineProperty(this, 'history', {
 			enumerable: false,
@@ -78,9 +100,7 @@ class Application extends EventEmitter {
 		ReactDOM.render(
 			<Provider store={this.store}>
 				<Router history={this.history}>
-					{this.routes.map((r,i) =>
-						React.cloneElement(r(this.store), {key: i})
-					)}
+					{this.resolveRoutes()}
 				</Router>
 			</Provider>,
 			root

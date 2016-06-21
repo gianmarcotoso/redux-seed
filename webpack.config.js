@@ -2,13 +2,14 @@ var webpack = require('webpack')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
 var precss       = require('precss')
 var autoprefixer = require('autoprefixer')
+var path = require('path')
 
-var config = require(__dirname + '/src/Config/' + process.env.NODE_ENV)
+var config = require(path.join(__dirname, 'src', 'Config', process.env.NODE_ENV))
 
 module.exports = {
 	entry: ['babel-polyfill', './src/index.js'],
 	output: {
-		path: __dirname + '/dist',
+		path: path.join(__dirname, 'dist'),
 		filename: 'js/index.js'
 	},
 	module: {
@@ -32,7 +33,7 @@ module.exports = {
 		extensions: ['', '.js', '.jsx', '.json'],
 		modulesDirectories: ['node_modules', 'src'],
 		alias: {
-			config: __dirname + '/src/Config/' + process.env.NODE_ENV
+			config: path.join(__dirname, 'src', 'Config', process.env.NODE_ENV)
 		}
 	},
 	plugins: [

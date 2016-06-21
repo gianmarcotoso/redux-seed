@@ -1,3 +1,5 @@
+import React from 'react'
+
 class Module {
 	constructor(name, reducer, routes) {
 		const _name = name
@@ -17,6 +19,10 @@ class Module {
 			enumerable: true,
 			get: () => _routes
 		})
+	}
+
+	submoduleOf(parent) {
+		this.parent = parent
 	}
 }
 
