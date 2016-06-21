@@ -155,3 +155,7 @@ Not much should be required, just do an `npm install` and then `npm start` to ru
 - Is a `Module` class really required? A plain object is probably more than enough... unless it should have more functionality?
 - Support `async/await` in tests (I should change the way `tape` is called)
 - What about chunking?
+
+## License
+
+MIT
