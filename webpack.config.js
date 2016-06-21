@@ -4,7 +4,7 @@ var precss       = require('precss')
 var autoprefixer = require('autoprefixer')
 var path = require('path')
 
-var config = require(path.join(__dirname, 'src', 'Config', process.env.NODE_ENV))
+var config = require(path.join(__dirname, 'src', 'config', process.env.NODE_ENV))
 
 module.exports = {
 	entry: ['babel-polyfill', './src/index.js'],
@@ -33,7 +33,7 @@ module.exports = {
 		extensions: ['', '.js', '.jsx', '.json'],
 		modulesDirectories: ['node_modules', 'src'],
 		alias: {
-			config: path.join(__dirname, 'src', 'Config', process.env.NODE_ENV)
+			config: path.join(__dirname, 'src', 'config', process.env.NODE_ENV)
 		}
 	},
 	plugins: [
