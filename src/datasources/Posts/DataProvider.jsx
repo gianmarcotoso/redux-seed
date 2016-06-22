@@ -13,7 +13,7 @@ let select = createStructuredSelector({
 let Wrap = (WrappedComponent, Actions) => {
 	class Wrapper extends React.Component {
 		render() {
-			const boundActionCreators = bindActionCreators(ActionCreators, this.props.dispatch)
+			const boundActionCreators = bindActionCreators(Actions, this.props.dispatch)
 
 			return <WrappedComponent {...this.props} {...boundActionCreators} />
 		}
@@ -22,6 +22,6 @@ let Wrap = (WrappedComponent, Actions) => {
 	return Wrapper
 }
 
-const DataProvider = WrappedComponent => Wrap(connect(select)(WrappedComponent))
+const DataProvider = WrappedComponent => Wrap(connect(select)(WrappedComponent), ActionCreators)
 
 export default DataProvider
