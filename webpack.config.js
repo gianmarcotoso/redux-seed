@@ -48,7 +48,6 @@ module.exports = {
 			_: 'lodash',
 			Immutable: 'immutable',
 			http: 'axios',
-			Numeral: 'numeral',
 			Promise: 'bluebird',
 			moment: 'moment'
 		}),

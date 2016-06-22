@@ -52,9 +52,10 @@ class Application extends EventEmitter {
 	}
 
 	resolveRoutes() {
-		let routes = this.modules.filter(m => !m.parent).map(m => {
-			return this.resolveRoutesForModule(m)
-		})
+		let routes = this.modules
+			.filter(m => !m.parent)
+			.filter(m => !!m.routes)
+			.map(m => this.resolveRoutesForModule(m))
 
 		return routes
 	}
@@ -62,6 +63,7 @@ class Application extends EventEmitter {
 	resolveRoutesForModule(m) {
 		let children = this
 			.getSubmodulesOf(m)
+			.filter(m => !!m.routes)
 			.map((c, i) => this.resolveRoutesForModule(c))
 
 		return React.cloneElement(m.routes(this.store, children), {key: m.name})

@@ -3,10 +3,16 @@ import { Component } from 'react'
 import { connect } from 'react-redux'
 import { createStructuredSelector } from 'reselect'
 
+// Importing a datasource
+import PostsDataProvider from 'datasources/Posts/DataProvider'
+
+// Importing local module actions
 import * as HomeActions from '../../Actions'
 
+// Importing the local component
 import Hello from 'components/Hello'
 
+// Importing some CSS
 import 'bootstrap/dist/css/bootstrap.css'
 
 class Home extends Component {
@@ -20,6 +26,14 @@ class Home extends Component {
 
 	componentDidMount() {
 		this.startCounting()
+
+		this.props.getFromFake()
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.posts !== this.props.posts) {
+			console.log(this.props.posts.toArray())
+		}
 	}
 
 	componentWillUnmount() {
@@ -75,4 +89,4 @@ let select = createStructuredSelector({
 	count: counterSelector
 })
 
-export default connect(select)(Home)
+export default connect(select)(PostsDataProvider(Home))
