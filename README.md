@@ -30,11 +30,14 @@ The proposed structure is the following:
 
 ```
 - src 						# Source code goes here!
-	- bootstrap			# All the code required to start the application
-	- components		# Dumb, reusable components go here
+	- bootstrap			    # All the code required to start the application
+	- components		    # Dumb, reusable components go here
 	- config				# Configuration files go here
 	- core					# Application core
 	- modules				# Modules directory
+	- data                  # Data Sources and Providers
+		- sources 			# Data Source Modules
+		- providers			# Data Providers
 	- utils 				# Utility files go here
 	index.hbs				# The template for the base html file
 	index.js				# The application entry point
@@ -46,6 +49,7 @@ The proposed structure is the following:
 This directory should contain all the code required to start the application. I have included 3 files, required by the core Application to start properly:
 
 - **startup.js** is a method that is called upon startup. Use this method to register modules and do other startup operations;
+- **ready.js** is a method called right before the very first render, and can feature asynchronous operations. The application will not render until the method finishes (or resolves)
 - **createStore.js** defines the final implementation of the `createStore` function used by _Redux_ to create its store. Modify it to attach more middlewares or redefine the function altogether;
 - **syncStore.js** is used to define the method used by _React Router Redux_ to sync its history with the Redux Store;
 
@@ -73,7 +77,7 @@ The files are name as `.js.example`, copy them as plain `.js` files and modify t
 This directory contains the files that represent the "core" of the application.
 
 - **Application.jsx** is a class that is instanced in `src/index.js` and is responsible for starting up the Application and rendering it to the DOM. It calls the function defined in `bootstrap/startup.js` before rendering the application for the first time and also emits a couple of events (`applicationDidStart` after the first render, `moduleDidRegister` after registering a module)
-
+- **DataProvider** is a file that should be use to create the `provide` function exposed by a Data Provider. More on this later.
 - **Module.jsx** is the class used to instance modules...
 
 ### Modules
@@ -134,6 +138,42 @@ export default async function(app, done, error) {
 
 	done()
 }
+```
+
+### Data
+
+Abstracting data modules from "feature" or "page" modules allows for a better separation of concern, and enhances component reusability.
+
+#### Data Sources
+
+Data Sources are modules, just like the ones described above. They only difference is a semantic one, since Data Modules should not expose any route and only implement a Reducer (and thus Actions, ActionCreators and have a DefaultState) relative to the Redux State domain they control. They are to be used exclusively handle the data coming in and going out of the application, with no knowledge whatsoever about how the rest of the app is structured.
+
+A Data Source is defined exactly like a module, just omit the Routes file and don't pass the third parameter to the `Module` constructor. Also, don't forget to register them!
+
+#### Data Providers
+
+Data Providers allow to define one or more way to connect any component to their Redux State domain. They define the selectors that are to be used and the action creators that are to be bound to the component, and export a function that can be used in a way very similar to Redux's native `connect` function. A typical Data Provider can be something like this:
+
+```javascript
+import { createStructuredSelector } from 'reselect'
+import provide from 'core/DataProvider'
+
+import * as ActionCreators from 'data/sources/Posts/ActionCreators'
+
+let postsSelector = state => state.posts.items
+let select = createStructuredSelector({
+	posts: postsSelector
+})
+
+export default provide(select, ActionCreators)
+```
+
+And a component can be connected to the state using Data Provider this way:
+
+```javascript
+import WithPosts from 'data/providers/Posts'
+//...
+export default WithPosts(MyComponent)
 ```
 
 ### Utils
