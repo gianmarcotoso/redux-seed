@@ -74,15 +74,29 @@ class Application extends EventEmitter {
 	}
 
 	init(callback) {
-		return new Promise((resolve, reject) => {
+		this._init = () => new Promise((resolve, reject) => {
 			callback(this, resolve, reject)
 		})
+
+		return this
+	}
+
+	ready(callback) {
+		this._ready = () => new Promise((resolve, reject) => {
+			callback(this, resolve, reject)
+		})
+
+		return this
 	}
 
 	async start(id) {
 		const root = document.getElementById(id)
 		if (!root) {
 			throw new Error(`Node #${id} does not exist!`)
+		}
+
+		if (this._init) {
+			await this._init()
 		}
 
         // Create the store, see bootstrap/createStore.js
@@ -98,6 +112,10 @@ class Application extends EventEmitter {
 			enumerable: false,
 			get: () => _history
 		})
+
+		if (this._ready) {
+			await this._ready()
+		}
 
 		ReactDOM.render(
 			<Provider store={this.store}>

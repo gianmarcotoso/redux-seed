@@ -4,7 +4,7 @@ import {
     RESET_COUNTER
 } from './Actions'
 
-export default function home(state = DefaultState, action) {
+export default function counter(state = DefaultState, action) {
 	switch(action.type) {
 		case INCREMENT_COUNTER: {
 			let count = state.get('count')

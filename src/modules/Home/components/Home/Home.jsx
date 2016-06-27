@@ -1,13 +1,9 @@
 import React from 'react'
 import { Component } from 'react'
-import { connect } from 'react-redux'
-import { createStructuredSelector } from 'reselect'
 
-// Importing a datasource
-import PostsDataProvider from 'datasources/Posts/DataProvider'
-
-// Importing local module actions
-import * as HomeActions from '../../Actions'
+// Importing some data providers
+import PostsProvider from 'data/providers/Posts'
+import CounterProvider from 'data/providers/Counter'
 
 // Importing the local component
 import Hello from 'components/Hello'
@@ -44,7 +40,7 @@ class Home extends Component {
 		this.stopCounting()
 
 		this.interval = setInterval(() => {
-			this.props.dispatch(HomeActions.incrementCounter())
+			this.props.incrementCounter()
 		}, 1000)
 	}
 
@@ -53,7 +49,7 @@ class Home extends Component {
 	}
 
 	resetCounter() {
-		this.props.dispatch(HomeActions.resetCounter())
+		this.props.resetCounter()
 	}
 
 	render() {
@@ -83,10 +79,5 @@ Home.defaultProps = {
 
 }
 
-let counterSelector = state => state.home.get('count')
 
-let select = createStructuredSelector({
-	count: counterSelector
-})
-
-export default connect(select)(PostsDataProvider(Home))
+export default CounterProvider(PostsProvider(Home))

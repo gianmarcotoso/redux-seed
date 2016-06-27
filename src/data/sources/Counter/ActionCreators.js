@@ -1,11 +1,14 @@
-export const INCREMENT_COUNTER = 'HOME@INCREMENT_COUNTER'
+import {
+	INCREMENT_COUNTER,
+	RESET_COUNTER
+} from './Actions'
+
 export function incrementCounter() {
 	return {
 		type: INCREMENT_COUNTER
 	}
 }
 
-export const RESET_COUNTER = 'HOME@RESET_COUNTER'
 export function resetCounter() {
 	return {
 		type: RESET_COUNTER
