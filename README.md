@@ -77,7 +77,7 @@ The files are name as `.js.example`, copy them as plain `.js` files and modify t
 This directory contains the files that represent the "core" of the application.
 
 - **Application.jsx** is a class that is instanced in `src/index.js` and is responsible for starting up the Application and rendering it to the DOM. It calls the function defined in `bootstrap/startup.js` before rendering the application for the first time and also emits a couple of events (`applicationDidStart` after the first render, `moduleDidRegister` after registering a module)
-- **DataProvider** is a file that should be use to create the `provide` function exposed by a Data Provider. More on this later.
+- **Provide.jsx** is a file that should be use to create the `provide` function exposed by a Data Provider. More on this later.
 - **Module.jsx** is the class used to instance modules...
 
 ### Modules
