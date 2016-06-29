@@ -1,5 +1,5 @@
 import { createStructuredSelector } from 'reselect'
-import provide from 'core/DataProvider'
+import provide from 'core/Provide'
 
 import * as ActionCreators from 'data/sources/Counter/ActionCreators'
 

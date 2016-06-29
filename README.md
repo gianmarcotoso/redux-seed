@@ -142,11 +142,11 @@ export default async function(app, done, error) {
 
 ### Data
 
-Abstracting data modules from "feature" or "page" modules allows for a better separation of concern, and enhances component reusability.
+Abstracting data modules from "feature" or "page" modules allows for a better separation of concern, and enhances reusability.
 
 #### Data Sources
 
-Data Sources are modules, just like the ones described above. They only difference is a semantic one, since Data Modules should not expose any route and only implement a Reducer (and thus Actions, ActionCreators and have a DefaultState) relative to the Redux State domain they control. They are to be used exclusively handle the data coming in and going out of the application, with no knowledge whatsoever about how the rest of the app is structured.
+Data Sources are modules, just like the ones described above. The only difference is a semantic one, since Data Modules should not expose any route and only implement a Reducer (and thus Actions, ActionCreators and a DefaultState) relative to the Redux State domain they control. They are to be used exclusively handle the data coming in and going out of the application, with no knowledge whatsoever about how the rest of the app is structured.
 
 A Data Source is defined exactly like a module, just omit the Routes file and don't pass the third parameter to the `Module` constructor. Also, don't forget to register them!
 
@@ -156,7 +156,7 @@ Data Providers allow to define one or more way to connect any component to their
 
 ```javascript
 import { createStructuredSelector } from 'reselect'
-import provide from 'core/DataProvider'
+import provide from 'core/Provide'
 
 import * as ActionCreators from 'data/sources/Posts/ActionCreators'
 
@@ -193,7 +193,7 @@ Not much should be required, just do an `npm install` and then `npm start` to ru
 - Better documentation!
 - Tests: is there a better way to organize tests? Should they all be in one place? Each module should probably have its own `tests` directory to test the reducer;
 - Is a `Module` class really required? A plain object is probably more than enough... unless it should have more functionality?
-- Support `async/await` in tests (I should change the way `tape` is called)
+- Support `async/await` in tests (I should change the way `tape` is called). Worth it?
 - What about chunking?
 
 ## License
