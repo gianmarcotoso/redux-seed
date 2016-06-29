@@ -88,7 +88,8 @@ Ideally, a module should be as much self-contained as possible and the only know
 
 A module can include some or all of the following files:
 
-- **Actions.js**, where you define your actions and action creators;
+- **Actions.js**, where you define your actions;
+- **ActionCreators.js**, where you define your action creators;
 - **Reducer.js**, where you define the module's reducer if it needs one;
 - **DefaultState.js**, where you define your module's default state (if it has a reducer);
 - **Routes.jsx** must (if the component has routes) export a function like this one:
