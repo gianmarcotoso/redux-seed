@@ -1,16 +1,13 @@
+import reduceWith from 'core/ReduceWith'
 import DefaultState from './DefaultState'
 import {
 	POPULATE
 } from './Actions'
 
-export default function(state = DefaultState, action) {
-	switch(action.type) {
-		case POPULATE: {
-			return state.set('list', Immutable.List(action.posts))
-		}
-
-		default: {
-			return state
-		}
+const mutators = {
+	[POPULATE]: {
+		items: action => action.items
 	}
 }
+
+export default reduceWith(mutators, DefaultState)

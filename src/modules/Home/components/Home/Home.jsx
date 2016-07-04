@@ -23,13 +23,11 @@ class Home extends Component {
 	componentDidMount() {
 		this.startCounting()
 
-		this.props.getFromFake()
+		this.props.getPostsFromFake()
 	}
 
 	componentDidUpdate(prevProps) {
-		if (prevProps.posts !== this.props.posts) {
-			console.log(this.props.posts.toArray())
-		}
+
 	}
 
 	componentWillUnmount() {
@@ -64,6 +62,13 @@ class Home extends Component {
 					<button className="btn btn-danger" onClick={this.stopCounting}>Stop</button>
 					<button className="btn btn-success" onClick={this.startCounting}>Start</button>
 				</div>
+
+				<h4>These are your posts</h4>
+				<ul>
+					{this.props.posts.map( (p, i) => (
+						<li key={i}>{p.title} <small className="text-muted">{p.content}</small></li>
+					))}
+				</ul>
 
 				{this.props.children}
             </div>

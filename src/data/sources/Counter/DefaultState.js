@@ -1,5 +1,5 @@
-const state = Immutable.Map({
+const state = {
 	count: 0
-})
+}
 
 export default state

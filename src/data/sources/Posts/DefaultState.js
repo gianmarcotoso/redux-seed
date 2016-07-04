@@ -1,5 +1,5 @@
-const state = Immutable.Map({
-	list: Immutable.List()
-})
+const state = {
+	items: []
+}
 
 export default state

@@ -2,18 +2,18 @@ import {
 	POPULATE
 } from './Actions'
 
-export function getFromServer(id = null) {
+export function getPostsFromServer(id = null) {
 	return async dispatch => {
 		const posts = await http.get(`${config.server}/posts`)
 
-		dispatch({type: POPULATE, posts})
+		dispatch({type: POPULATE, items: posts})
 	}
 }
 
-export function getFromFake() {
+export function getPostsFromFake() {
 	return {
 		type: POPULATE,
-		posts: [{
+		items: [{
 			id: 1,
 			title: 'Hello, world!',
 			content: 'A lot of words'

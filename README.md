@@ -9,7 +9,7 @@ This is a barebones modularized application that uses Redux, React and React Rou
 - **[Reselect](https://github.com/reactjs/reselect)** to create selectors
 - **[Axios](https://github.com/mzabriskie/axios)** as its http client
 - **[Bluebird](https://github.com/petkaantonov/bluebird)** as its Promise library
-- **[Immutable](https://facebook.github.io/immutable-js/)** to handle immutable application states
+- ~~**[Immutable](https://facebook.github.io/immutable-js/)** to handle immutable application states~~ <sub>The dependency is there but it's not currently used</sub>
 - **[Moment](http://momentjs.com/)** to stay sane with date manipulation
 - **[Lodash](https://lodash.com/)** for all those things ES6/7 doesn't do (yet)
 - **[jQuery](https://jquery.com/)** because you might still need it
@@ -78,6 +78,7 @@ This directory contains the files that represent the "core" of the application.
 
 - **Application.jsx** is a class that is instanced in `src/index.js` and is responsible for starting up the Application and rendering it to the DOM. It calls the function defined in `bootstrap/startup.js` before rendering the application for the first time and also emits a couple of events (`applicationDidStart` after the first render, `moduleDidRegister` after registering a module)
 - **Provide.jsx** is a file that should be used to create a Data Provider. More on this later.
+- **ReduceWith.js** simplifies the writing of plain reducers
 - **Module.jsx** is the class used to instance modules...
 
 ### Modules
@@ -176,6 +177,48 @@ import WithPosts from 'data/providers/Posts'
 //...
 export default WithPosts(MyComponent)
 ```
+
+#### Using ReduceWith
+
+If you want to (but it's totally optional) you can use `ReduceWith` to write more concise reducers and avoid `switch` statements. It works with plain objects but you can easily modify it to work with immutable structures - as it is, it doesn't use any external library but simply copies the current state into a new plain object.
+
+To write a reducer using `ReduceWith` you just need to define a `mutators` object where you specify, for each given action, how the state will mutate by defining either a function or an object with the keys to be mutated. If you pass a function, it will get both the `state` and the `action` as its arguments. If you pass an object, each key can either be an immediate value or a function receiving the `action` as its only argument.
+
+Here's an example:
+
+```javascript
+import reduceWith from 'core/ReduceWith'
+import {
+	POPULATE_LIST,
+	SORT_LIST,
+	SET_FILTER,
+	CLEAR_FILTER
+} from './Actions'
+import DefaultState from './DefaultState'
+
+const mutators = {
+	[POPULATE_LIST]: {
+		list: action => action.items
+	},
+	[SORT_LIST]: (state, action) => {
+		const { orderBy, reverse } = action
+		const { list } = state
+
+		return {
+			...state,
+			list: _.orderBy(list, orderBy, reverse ? 'desc' : 'asc')
+		}
+	},
+	[SET_FILTER]: {
+		name: action => action.name
+	},
+	[CLEAR_FILTER]: {
+		name: ''
+	}
+}
+
+export default reduceWith(mutators, DefaultState)
+``` 
 
 ### Utils
 

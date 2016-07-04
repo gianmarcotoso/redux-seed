@@ -1,23 +1,15 @@
+import reduceWith from 'core/ReduceWith'
 import DefaultState from './DefaultState'
 import {
     INCREMENT_COUNTER,
     RESET_COUNTER
 } from './Actions'
 
-export default function counter(state = DefaultState, action) {
-	switch(action.type) {
-		case INCREMENT_COUNTER: {
-			let count = state.get('count')
-
-			return state.set('count', count + 1)
-		}
-
-		case RESET_COUNTER: {
-			return state.set('count', 0)
-		}
-
-		default: {
-			return state
-		}
+const mutators = {
+	[INCREMENT_COUNTER]: (state, action) => ({...state, count: state.count + 1}),
+	[RESET_COUNTER]: {
+		count: 0
 	}
 }
+
+export default reduceWith(mutators, DefaultState)
