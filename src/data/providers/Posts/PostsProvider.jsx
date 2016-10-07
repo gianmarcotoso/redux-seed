@@ -1,5 +1,5 @@
 import { createStructuredSelector } from 'reselect'
-import provide from 'core/Provide'
+import { connect } from 'react-redux'
 
 import * as ActionCreators from 'data/sources/Posts/ActionCreators'
 
@@ -8,4 +8,4 @@ let select = createStructuredSelector({
 	posts: postsSelector
 })
 
-export default provide(select, ActionCreators)
+export default connect(select, ActionCreators)

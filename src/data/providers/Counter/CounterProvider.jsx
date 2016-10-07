@@ -1,5 +1,5 @@
 import { createStructuredSelector } from 'reselect'
-import provide from 'core/Provide'
+import { connect } from 'react-redux'
 
 import * as ActionCreators from 'data/sources/Counter/ActionCreators'
 
@@ -8,4 +8,5 @@ const select = createStructuredSelector({
 	count: counterSelector
 })
 
-export default provide(select, ActionCreators)
+export default connect(select, ActionCreators)
+
