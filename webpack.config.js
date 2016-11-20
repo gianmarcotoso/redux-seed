@@ -21,7 +21,7 @@ module.exports = {
 			{ test: /\.png(\?v=\d+\.\d+\.\d+)?$/,    loader: 'file' },
 			{ test: /\.jpe?g(\?v=\d+\.\d+\.\d+)?$/,    loader: 'file' },
 			{ test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,    loader: 'url?limit=10000&mimetype=image/svg+xml' },
-			{ test: /\.jsx?$/, exclude: /node_modules/, loaders: ['react-hot', 'babel'] },
+			{ test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel'] },
 			{ test: /\.json$/, loaders: ['json-loader'] },
 			{ test: /\.hbs$/, loader: 'handlebars-loader' }
 		]

@@ -1,4 +1,4 @@
 {
   "presets": ["es2015", "stage-0", "react"],
-  "plugins": ["syntax-async-functions"]
+  "plugins": ["syntax-async-functions", "react-hot-loader/babel"]
 }
