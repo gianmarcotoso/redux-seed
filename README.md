@@ -2,7 +2,7 @@
 
 #### A word of warning
 
-This boilerplate has not been updated for a while and most, if not all its dependencies are outdate, as well as the boilerplate itself (I've evolved from it, at least!). I'll be updating it with a new version sometime soon, but if you decide to use it take care of running an upgrade on all the packages!
+This boilerplate has not been updated for a while and most, if not all its dependencies are outdated, as well as the boilerplate itself (I've evolved from it, at least!). I'll be updating it with a new version sometime soon, but if you decide to use it take care of running an upgrade on all the packages!
 
 #### And now, back to our scheduled programming...
 
