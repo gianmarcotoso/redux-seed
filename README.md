@@ -1,3 +1,5 @@
+[![CryptoTip](https://img.shields.io/badge/Donate%20with-CryptoTip-blue.svg?style=flat&colorB=007bff)](https://cryptotip.it/p/gianmarcotoso)
+
 # Redux Application Seed
 
 #### A word of warning
